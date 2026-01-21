@@ -118,10 +118,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // Handle tool calls
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
-    console.error(`[antigravity] Received tool call: ${name}`);
 
     if (!args) {
-        console.error(`[antigravity] Error: Missing arguments for ${name}`);
         return {
             content: [{ type: 'text', text: `Missing arguments for tool: ${name}` }],
             isError: true,
@@ -131,15 +129,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     try {
         switch (name) {
             case 'tana_search': {
-                console.error(`[antigravity] Executing tanaSearch: ${args.query}`);
                 const result = await tanaSearch(
                     args.query as string,
                     args.tag as string | undefined,
                     args.semantic as boolean | undefined
                 );
-                console.error(`[antigravity] tanaSearch finished. Results length: ${result.results?.length}`);
                 if (result.error) {
-                    console.error(`[antigravity] tanaSearch error: ${result.error}`);
                     return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
                 }
                 return { content: [{ type: 'text', text: result.results }] };

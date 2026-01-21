@@ -45,6 +45,13 @@ export interface CalendarEvent {
     id?: string;
 }
 
+interface CalendarEventResponse {
+    id: string;
+    summary?: string;
+    start?: { dateTime?: string; date?: string };
+    end?: { dateTime?: string; date?: string };
+}
+
 /**
  * List upcoming calendar events
  */
@@ -67,11 +74,11 @@ export async function listCalendarEvents(maxResults = 10): Promise<CalendarEvent
     }
 
     const data = await response.json();
-    return (data.items || []).map((e: any) => ({
+    return (data.items || []).map((e: CalendarEventResponse) => ({
         id: e.id,
         summary: e.summary || '(No title)',
-        start: e.start?.dateTime || e.start?.date,
-        end: e.end?.dateTime || e.end?.date,
+        start: e.start?.dateTime || e.start?.date || '',
+        end: e.end?.dateTime || e.end?.date || '',
     }));
 }
 

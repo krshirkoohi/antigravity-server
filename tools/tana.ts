@@ -24,12 +24,16 @@ export interface TanaNodeResult {
  */
 export async function tanaSearch(query: string, tag?: string, semantic = false): Promise<TanaSearchResult> {
     try {
-        let cmd = `${SUPERTAG_PATH} search "${query}"`;
+        // Sanitize input to prevent command injection
+        const sanitizedQuery = query.replace(/["`$\\]/g, '');
+        const sanitizedTag = tag?.replace(/["`$\\;\s]/g, '');
+
+        let cmd = `${SUPERTAG_PATH} search "${sanitizedQuery}"`;
         if (semantic) {
             cmd += ' --semantic';
         }
-        if (tag) {
-            cmd += ` --tag ${tag}`;
+        if (sanitizedTag) {
+            cmd += ` --tag ${sanitizedTag}`;
         }
 
         const { stdout, stderr } = await execAsync(cmd);
