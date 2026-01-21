@@ -1,0 +1,17 @@
+{
+    "name": "antigravity-server",
+    "version": "1.0.0",
+    "description": "Unified MCP server for the Antigravity system - wraps Tana, Google Calendar/Drive",
+    "type": "module",
+    "main": "index.ts",
+    "scripts": {
+        "start": "bun run index.ts",
+        "dev": "bun --watch index.ts"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^25.0.9"
+    }
+}
